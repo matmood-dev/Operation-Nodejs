@@ -11,7 +11,7 @@ router.delete('/tasks/:id', deleteTaskController);
 
 // Endpoint to download the SQLite database file
 router.get('/download-database', (req, res) => {
-  const dbPath = path.resolve(__dirname, '../op1.db'); // Adjust the path to your database file
+  const dbPath = path.resolve(__dirname, '../models/op1.db'); // Updated path to your database file
   res.download(dbPath, 'op1.db', (err) => {
     if (err) {
       console.error('Error downloading database:', err);
