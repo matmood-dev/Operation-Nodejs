@@ -12,12 +12,16 @@ const getTasksController = async (req, res) => {
 const addTaskController = async (req, res) => {
   try {
     const task = req.body;
-    const addedTask = await addTask(task);
+    console.log('Adding task:', task);
+    const addedTask = await addTask({ ...task, date: task.date || new Date().toISOString() });
     res.status(201).json(addedTask);
   } catch (err) {
+    console.error('Error in addTaskController:', err);
     res.status(500).json({ error: err.message });
   }
 };
+
+
 
 const updateTaskController = async (req, res) => {
   try {

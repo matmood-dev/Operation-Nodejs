@@ -1,9 +1,8 @@
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
-require('dotenv').config(); // Add this line to load environment variables
+require('dotenv').config();
 
-// Connect to SQLite database
-const dbPath = path.resolve(__dirname, process.env.DATABASE_URL); // Use environment variable
+const dbPath = path.resolve(__dirname, process.env.DATABASE_URL);
 const db = new sqlite3.Database(dbPath, (err) => {
   if (err) {
     console.error('Error opening database:', err);
@@ -21,7 +20,8 @@ const db = new sqlite3.Database(dbPath, (err) => {
       fixingTime TEXT,
       status TEXT,
       type TEXT,
-      statusDetail TEXT
+      statusDetail TEXT,
+      date TEXT
     )`);
   }
 });
@@ -40,10 +40,10 @@ const getTasks = () => {
 
 const addTask = (task) => {
   return new Promise((resolve, reject) => {
-    const { installerName, invoiceNo, amount, customerName, mobileNumber, area, driver, fixingTime, status, type, statusDetail } = task;
-    db.run(`INSERT INTO tasks (installerName, invoiceNo, amount, customerName, mobileNumber, area, driver, fixingTime, status, type, statusDetail) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      [installerName, invoiceNo, amount, customerName, mobileNumber, area, driver, fixingTime, status, type, statusDetail],
+    const { installerName, invoiceNo, amount, customerName, mobileNumber, area, driver, fixingTime, status, type, statusDetail, date } = task;
+    db.run(`INSERT INTO tasks (installerName, invoiceNo, amount, customerName, mobileNumber, area, driver, fixingTime, status, type, statusDetail, date) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [installerName, invoiceNo, amount, customerName, mobileNumber, area, driver, fixingTime, status, type, statusDetail, date],
       function (err) {
         if (err) {
           reject(err);
@@ -56,10 +56,10 @@ const addTask = (task) => {
 
 const updateTask = (id, task) => {
   return new Promise((resolve, reject) => {
-    const { installerName, invoiceNo, amount, customerName, mobileNumber, area, driver, fixingTime, status, type, statusDetail } = task;
-    db.run(`UPDATE tasks SET installerName = ?, invoiceNo = ?, amount = ?, customerName = ?, mobileNumber = ?, area = ?, driver = ?, fixingTime = ?, status = ?, type = ?, statusDetail = ?
+    const { installerName, invoiceNo, amount, customerName, mobileNumber, area, driver, fixingTime, status, type, statusDetail, date } = task;
+    db.run(`UPDATE tasks SET installerName = ?, invoiceNo = ?, amount = ?, customerName = ?, mobileNumber = ?, area = ?, driver = ?, fixingTime = ?, status = ?, type = ?, statusDetail = ?, date = ?
             WHERE id = ?`,
-      [installerName, invoiceNo, amount, customerName, mobileNumber, area, driver, fixingTime, status, type, statusDetail, id],
+      [installerName, invoiceNo, amount, customerName, mobileNumber, area, driver, fixingTime, status, type, statusDetail, date, id],
       function (err) {
         if (err) {
           reject(err);
@@ -86,6 +86,5 @@ module.exports = {
   getTasks,
   addTask,
   updateTask,
-  deleteTask,
-  db
+  deleteTask
 };
