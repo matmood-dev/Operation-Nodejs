@@ -21,8 +21,6 @@ const addTaskController = async (req, res) => {
   }
 };
 
-
-
 const updateTaskController = async (req, res) => {
   try {
     const taskId = req.params.id;
@@ -33,6 +31,7 @@ const updateTaskController = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
 
 const deleteTaskController = async (req, res) => {
   try {
